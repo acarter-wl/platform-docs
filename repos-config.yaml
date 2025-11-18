@@ -1,0 +1,32 @@
+# Repository Documentation Aggregation Configuration
+#
+# This file defines which repositories to pull documentation from
+# and where to place them in the final documentation site.
+#
+# Format:
+#   - repo: GitHub repository (org/repo-name)
+#     docs_path: Path to docs folder in source repo (default: docs/)
+#     target_path: Where to place docs in platform-docs (under docs/)
+#     enabled: Whether to include this repo (default: true)
+
+# Repository configuration
+repos:
+  - repo: acarter-wl/TheVault
+    docs_path: docs
+    target_path: services/thevault
+    enabled: true
+    description: TheVault documentation
+me
+# Configuration options
+config:
+  # Clean target directories before copying (removes old files)
+  clean_before_copy: true
+
+  # Skip repos that don't have docs folder (don't fail)
+  skip_missing_docs: true
+
+  # Create index.md if missing in aggregated docs
+  create_index_if_missing: true
+
+  # Commit message for auto-generated updates
+  commit_message: "docs: Update aggregated documentation from source repos"

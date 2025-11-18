@@ -1,0 +1,87 @@
+name: Aggregate and Deploy Documentation
+
+on:
+  # Run every 4 hours
+  schedule:
+    - cron: '0 */4 * * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+  # Run on push to main (for config changes)
+  push:
+    branches:
+      - main
+    paths:
+      - 'repos-config.yaml'
+      - 'scripts/aggregate-docs.py'
+      - '.github/workflows/aggregate-docs.yml'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Prevent concurrent deployments
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  aggregate-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout platform-docs
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Aggregate documentation from source repos
+        env:
+          GITHUB_TOKEN: ${{ secrets.DOCS_PAT || secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/aggregate-docs.py --config repos-config.yaml
+
+      - name: Commit aggregated docs
+        run: |
+          git add docs/services/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "docs: Update aggregated documentation [skip ci]"
+            git push origin main
+          fi
+
+      - name: Build documentation site
+        run: |
+          mkdocs build --strict
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Report status
+        if: always()
+        run: |
+          echo "📊 Deployment Status: ${{ job.status }}"
+          echo "🌐 Documentation URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"

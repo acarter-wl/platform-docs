@@ -1,0 +1,155 @@
+site_name: Platform Documentation
+site_url: https://acarter-wl.github.io/platform-docs/
+site_description: Platform documentation hub
+site_author: Austin Carter
+
+# Repository
+repo_name: acarter-wl/platform-docs
+repo_url: https://github.com/acarter-wl/platform-docs
+edit_uri: edit/main/docs/
+
+# Copyright
+copyright: Copyright &copy; 2025 Austin Carter
+
+# Theme configuration
+theme:
+  name: material
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+  features:
+    - navigation.instant      # Instant loading
+    - navigation.tracking     # URL updates as you scroll
+    - navigation.tabs         # Top-level sections in tabs
+    - navigation.sections     # Sections in sidebar
+    - navigation.expand       # Expand sections by default
+    - navigation.top          # Back to top button
+    - search.suggest          # Search suggestions
+    - search.highlight        # Highlight search results
+    - search.share            # Share search results
+    - toc.integrate           # TOC integrated in sidebar
+    - content.code.copy       # Copy button for code blocks
+    - content.action.edit     # Edit button on pages
+
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+
+# Navigation structure
+nav:
+  - Home: index.md
+
+  - Architecture:
+      - Overview: architecture/overview.md
+      - ADRs:
+          - architecture/adr/index.md
+          - ADR-001 Atlantis Migration: architecture/adr/001-atlantis-migration-ecs-to-eks.md
+
+  - Runbooks:
+      - runbooks/index.md
+      - Atlantis Down: runbooks/atlantis-service-down.md
+
+  - How-To Guides:
+      - how-to/index.md
+      - Create Terraform Module: how-to/create-terraform-module.md
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+      separator: '[\s\-\.]+'
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+      fallback_to_build_date: true
+
+# Extensions
+markdown_extensions:
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Extra CSS
+extra_css:
+  - stylesheets/extra.css
+
+# Extra JavaScript
+extra_javascript:
+  - javascripts/extra.js
+
+# Extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/acarter-wl
+      name: Austin Carter on GitHub
+
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: Thanks for your feedback! Help us improve by creating an issue.
