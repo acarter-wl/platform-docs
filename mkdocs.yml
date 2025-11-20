@@ -74,6 +74,14 @@ nav:
       - how-to/index.md
       - Create Terraform Module: how-to/create-terraform-module.md
 
+  - Services:
+      - TheVault:
+          - Overview: services/thevault/index.md
+          - Architecture: services/thevault/architecture/overview.md
+          - API Reference: services/thevault/api/endpoints.md
+          - Runbooks: services/thevault/runbooks/incident-response.md
+          - Local Development: services/thevault/how-to/local-development.md
+
 # Plugins
 plugins:
   - search:
