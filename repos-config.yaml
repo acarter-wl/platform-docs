@@ -16,7 +16,7 @@ repos:
     target_path: services/thevault
     enabled: true
     description: TheVault documentation
-me
+
 # Configuration options
 config:
   # Clean target directories before copying (removes old files)
