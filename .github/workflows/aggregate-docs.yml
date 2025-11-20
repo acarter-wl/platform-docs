@@ -47,14 +47,28 @@ jobs:
           pip install -r requirements.txt
 
       - name: Configure Git
+        env:
+          GITHUB_TOKEN: ${{ secrets.DOCS_PAT || secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # Configure git to use the token for HTTPS authentication
+          git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
 
       - name: Aggregate documentation from source repos
         env:
           GITHUB_TOKEN: ${{ secrets.DOCS_PAT || secrets.GITHUB_TOKEN }}
+          GIT_TERMINAL_PROMPT: 0
         run: |
+          # Verify token is set
+          if [ -z "$GITHUB_TOKEN" ]; then
+            echo "❌ ERROR: GITHUB_TOKEN is not set"
+            echo "Please configure DOCS_PAT secret in repository settings for private repos"
+            exit 1
+          fi
+          echo "✅ GitHub token is configured"
+
+          # Run aggregation
           python scripts/aggregate-docs.py --config repos-config.yaml
 
       - name: Commit aggregated docs
