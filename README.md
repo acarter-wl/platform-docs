@@ -145,10 +145,18 @@ your-service/
 
 ### Required Secrets
 
-**DOCS_PAT** (optional): GitHub Personal Access Token with `repo` scope
-- Required for private repositories
-- Created at: Settings → Developer settings → Personal access tokens
-- Add to repo: Settings → Secrets → Actions → New repository secret
+**DOCS_PAT**: GitHub Personal Access Token with `repo` scope
+
+⚠️ **Important**: For private repositories (like TheVault), you **must** configure a Personal Access Token.
+
+See **[GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md)** for detailed setup instructions.
+
+**Quick Setup**:
+1. Create a PAT: https://github.com/settings/tokens
+2. Grant `repo` scope
+3. Add as secret: Repository Settings → Secrets → Actions → New secret
+4. Name: `DOCS_PAT`
+5. Value: Your token
 
 If not provided, workflow uses `GITHUB_TOKEN` (public repos only).
 
